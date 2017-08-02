@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "pele/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "attack_the_block"
+  spec.name          = "pele"
   spec.version       = Pele::VERSION
   spec.authors       = ["Suyesh Bhandari"]
   spec.email         = ["suyeshb@gmail.com"]
 
   spec.summary       = "Pele lets you deploy multiple servers and run load test"
   spec.description   = "Pele lets you deploy multiple servers and run load test"
-  spec.homepage      = "https://github.com/suyesh/attack_the_block"
+  spec.homepage      = "https://github.com/suyesh/pele"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
