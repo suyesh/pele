@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'pele'
+
+Pele::Cli.start(ARGV)
