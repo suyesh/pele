@@ -1,3 +1,4 @@
+require 'thor'
 module Pele
   module Utils
     def self.get_os_path
