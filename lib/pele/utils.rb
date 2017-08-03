@@ -1,6 +1,6 @@
 module Pele
   module Utils
-    def get_os_path
+    def self.get_os_path
       if OS.windows?
         '%USERPROFILE%.awscredentials'
       elsif OS.mac? || OS.linux?
@@ -12,14 +12,14 @@ module Pele
       end
     end
 
-    def check_existing_file(os)
+    def self.check_existing_file(os)
       if File.exist? File.expand_path os
         overwrite = prompt.select("This is going to overwrite your existing #{'~/.aws/credentials'.colorize(:green)}. ok?", %w[OK EXIT])
         abort unless overwrite == 'OK'
       end
     end
 
-    def post_identification
+    def self.post_identification
       puts "\e[H\e[2J"
       say('Your OS identified: ', :yellow)
       puts ''
@@ -29,7 +29,7 @@ module Pele
       puts ''
     end
 
-    def create_key_pair(os, key_pair_name)
+    def self.create_key_pair(os, key_pair_name)
       current_dirname = File.basename(Dir.getwd)
       ec2 = Aws::EC2::Client.new
       Dir.chdir File.dirname(os)
