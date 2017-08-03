@@ -47,7 +47,6 @@ module Pele
       puts ''
       key_pair_name = prompt.ask('Name your key-pair. For example: mykeypair.colorize(:green)')
       begin
-        current_dirname = File.basename(Dir.getwd)
         ec2 = Aws::EC2::Client.new
         key_pair = ec2.create_key_pair(key_name: key_pair_name)
         create_file "~/.ssh/#{key_pair.key_name}.pem" do
