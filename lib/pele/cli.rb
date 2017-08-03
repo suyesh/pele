@@ -48,7 +48,7 @@ module Pele
       key_pair_name = prompt.ask('Name your key-pair. For example: mykeypair.colorize(:green)')
       begin
         ec2 = Aws::EC2::Client.new
-        key_pair = ec2.create_key_pair(key_name: key_pair_name)
+        key_pair = ec2.create_key_pair(key_name: "#{key_pair_name}-pele")
         create_file "~/.ssh/#{key_pair.key_name}.pem" do
           key_pair.key_material
         end
