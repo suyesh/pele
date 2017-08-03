@@ -53,7 +53,6 @@ module Pele
         create_file "~/.ssh/#{key_pair.key_name}.pem" do
           key_pair.key_material
         end
-        FileUtils.chmod(0600, File.expand_path "~/.ssh/#{key_pair.key_name}.pem")
         say('Key-pair successfully generated', :green)
       rescue => e
         say('Something went wrong while trying to create key-pair. Please try again', :red)
