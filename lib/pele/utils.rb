@@ -1,3 +1,4 @@
+require 'tty-prompt'
 module Pele
   module Utils
     def self.get_os_path
