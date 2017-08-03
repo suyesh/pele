@@ -8,7 +8,7 @@ module Pele
       os = Pele::Utils.get_os_path
       prompt = TTY::Prompt.new active_color: :green
       Pele::Utils.check_existing_file(os, prompt)
-      Pele.utils.post_identification
+      Pele::Utils.post_identification
       aws_access_key_id = prompt.ask('AWS Access Key ID: '.colorize(:blue), required: true)
       aws_secret_access_key = prompt.ask('AWS Secret Access Key: '.colorize(:blue), required: true)
       aws_region = prompt.select('Choose a AWS region: '.colorize(:blue), Pele::Regions::ALL)
