@@ -49,7 +49,7 @@ module Pele
         current_dirname = File.basename(Dir.getwd)
         ec2 = Aws::EC2::Client.new
         ec2.create_key_pair(key_name: key_pair_name)
-        File.open("~/.ssh/#{key_pair_name}.pem", 'w') do |file|
+        File.open((File.expand_path("~/.ssh/#{key_pair_name}.pem")), 'w') do |file|
           file.write key_pair_name.private_key
         end
         require 'fileutils'
@@ -59,7 +59,7 @@ module Pele
       rescue => e
         say('Something went wrong while trying to create key-pair. Please try again', :red)
         puts ''
-        puts "Error: #{e.colorize(:red)}"
+        puts "Error: #{e}"
       end
     end
   end
