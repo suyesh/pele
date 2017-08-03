@@ -49,14 +49,14 @@ module Pele
       begin
         ec2 = Aws::EC2::Client.new
         key_pair = ec2.create_key_pair(key_name: "#{key_pair_name}-pele")
-        create_file "~/.ssh/#{key_pair.key_name}.pem" do
+        create_file (OS.mac? || OS.linux? ? "~/.ssh/#{key_pair.key_name}.pem" : "%HOMEPATH%\.ssh\#{key_pair.key_name}.pem") do
           key_pair.key_material
         end
         say('Key-pair successfully generated', :green)
       rescue => e
-        say('Something went wrong while trying to create key-pair. Please try again', :red)
+        say('Something went wrong while trying to create key-pair. Please try again', :cyan)
         puts ''
-        puts "Error: #{e}"
+        puts "Error: #{e}".colorize(:red)
       end
     end
   end
