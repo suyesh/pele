@@ -7,7 +7,7 @@ module Pele
     def init
       os = Pele::Utils.get_os_path
       prompt = TTY::Prompt.new active_color: :green
-      Pele::Utils.check_existing_file(os)
+      Pele::Utils.check_existing_file(os, prompt)
       Pele.utils.post_identification
       aws_access_key_id = prompt.ask('AWS Access Key ID: '.colorize(:blue), required: true)
       aws_secret_access_key = prompt.ask('AWS Secret Access Key: '.colorize(:blue), required: true)

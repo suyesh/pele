@@ -1,4 +1,3 @@
-require 'tty-prompt'
 module Pele
   module Utils
     def self.get_os_path
@@ -13,7 +12,7 @@ module Pele
       end
     end
 
-    def self.check_existing_file(os)
+    def self.check_existing_file(os, prompt)
       if File.exist? File.expand_path os
         overwrite = prompt.select("This is going to overwrite your existing #{'~/.aws/credentials'.colorize(:green)}. ok?", %w[OK EXIT])
         abort unless overwrite == 'OK'
