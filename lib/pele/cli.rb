@@ -53,7 +53,7 @@ module Pele
           file.write key_pair_name.private_key
         end
         require 'fileutils'
-        FileUtils.chmod(0600, "~/.ssh/my-key-pair.pk")
+        FileUtils.chmod(0600, "~/.ssh/#{key_pair_name}.pem")
 
         say('Key-pair successfully generated', :green)
       rescue => e
