@@ -1,3 +1,3 @@
 module Pele
-  VERSION = '0.1.12-pre'.freeze
+  VERSION = '0.1.13-pre'.freeze
 end

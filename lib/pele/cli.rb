@@ -27,9 +27,9 @@ module Pele
       puts ''
       say('Provide your aws credentials below', :yellow)
       puts ''
-      aws_access_key_id = prompt.ask('AWS Access Key ID: '.colorize(:blue), required: true)
-      aws_secret_access_key = prompt.ask('AWS Secret Access Key: '.colorize(:blue), required: true)
-      aws_region = prompt.select('Choose a AWS region: '.colorize(:blue), Pele::Regions::ALL)
+      aws_access_key_id = prompt.ask('AWS Access Key ID: '.colorize(:blue), required: true).delete(' ')
+      aws_secret_access_key = prompt.ask('AWS Secret Access Key: '.colorize(:blue), required: true).delete(' ')
+      aws_region = prompt.select('Choose a AWS region: '.colorize(:blue), Pele::Regions::ALL).delete(' ')
       if aws_access_key_id.empty? || aws_secret_access_key.empty? || aws_region.empty?
         say('You need to provide all three credentials. Please try again', :red)
         abort
@@ -39,17 +39,12 @@ module Pele
       end
       puts ''
       say('Now lets generate AWS key-pair. This is needed to access EC2 Instances', :green)
-      if File.exist? File.expand_path "#{os}key"
-        puts ''
-        overwrite = prompt.select('Looks like you already have a key generated. Would you like to generate new one?', %w[Yes No])
-        abort if overwrite == 'Yes'
-      end
       puts ''
-      key_pair_name = prompt.ask('Name your key-pair. For example: mykeypair.colorize(:green)')
+      key_pair_name = prompt.ask("Name your key-pair. For example: #{'mykeypair'.colorize(:green)}").delete(' ')
       begin
         ec2 = Aws::EC2::Client.new
         key_pair = ec2.create_key_pair(key_name: "#{key_pair_name}-pele")
-        create_file (OS.mac? || OS.linux? ? "~/.ssh/#{key_pair.key_name}.pem" : "%HOMEPATH%\.ssh\#{key_pair.key_name}.pem") do
+        create_file (OS.mac? || OS.linux? ? "~/.ssh/#{key_pair.key_name}.pem" : "%HOMEPATH%\\.ssh\\#{key_pair.key_name}.pem") do
           key_pair.key_material
         end
         say('Key-pair successfully generated', :green)
