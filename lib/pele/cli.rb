@@ -48,12 +48,10 @@ module Pele
       begin
         current_dirname = File.basename(Dir.getwd)
         ec2 = Aws::EC2::Client.new
-        Dir.chdir File.dirname(os)
         ec2.create_key_pair(key_name: key_pair_name)
-        Dir.chdir current_dirname
-        create_file "#{File.dirname(os)}key" do
-          key_pair_name.to_s
-        end
+        # create_file "#{File.dirname(os)}key" do
+        #   key_pair_name.to_s
+        # end
         say('Key-pair successfully generated', :green)
       rescue => e
         say('Something went wrong while trying to create key-pair. Please try again', :red)
