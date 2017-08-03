@@ -1,3 +1,4 @@
+require 'fileutils'
 module Pele
   class Cli < Thor
     include Thor::Actions
@@ -52,12 +53,7 @@ module Pele
         create_file "~/.ssh/#{key_pair.key_name}.pem" do
           key_pair.key_material
         end
-        File.open("~/.ssh/#{key_pair_name}.pem", 'w') do |file|
-          file.write key_pair_name
-        end
-        require 'fileutils'
-        FileUtils.chmod(0600, "~/.ssh/#{key_pair_name}.pem")
-
+        FileUtils.chmod(0600, "~/.ssh/#{key_pair.key_name}.pem")
         say('Key-pair successfully generated', :green)
       rescue => e
         say('Something went wrong while trying to create key-pair. Please try again', :red)
