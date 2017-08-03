@@ -50,7 +50,7 @@ module Pele
         ec2 = Aws::EC2::Client.new
         ec2.create_key_pair(key_name: key_pair_name)
         File.open((File.expand_path("~/.ssh/#{key_pair_name}.pem")), 'w') do |file|
-          file.write key_pair_name.private_key
+          file.write key_pair_name
         end
         require 'fileutils'
         FileUtils.chmod(0600, "~/.ssh/#{key_pair_name}.pem")
