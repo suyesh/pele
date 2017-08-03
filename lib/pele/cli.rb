@@ -3,12 +3,29 @@ module Pele
     include Thor::Actions
 
     desc 'pele init', 'Initializes the AWS credentials on your Machine'
-
     def init
-      os = Pele::Utils.get_os_path
+      os = if OS.windows?
+             '%USERPROFILE%.awscredentials'
+           elsif OS.mac? || OS.linux?
+             '~/.aws/credentials'
+           end
+      if os.nil?
+        puts ''
+        say("Looks like we could not identify your OS.\n\nPlease setup your ENV values as follows:\n\nAWS_ACCESS_KEY_ID=[YOUR ACCES KEY ID]\nAWS_SECRET_ACCESS_KEY=[YOUR SECRET KEY ID]", :red)
+        abort
+      end
       prompt = TTY::Prompt.new active_color: :green
-      Pele::Utils.check_existing_file(os, prompt)
-      Pele::Utils.post_identification
+      if File.exist? File.expand_path os
+        overwrite = prompt.select("This is going to overwrite your existing #{'~/.aws/credentials'.colorize(:green)}. ok?", %w[OK EXIT])
+        abort unless overwrite == 'OK'
+      end
+      puts "\e[H\e[2J"
+      say('Your OS identified: ', :yellow)
+      puts ''
+      puts OS.report
+      puts ''
+      say('Provide your aws credentials below', :yellow)
+      puts ''
       aws_access_key_id = prompt.ask('AWS Access Key ID: '.colorize(:blue), required: true)
       aws_secret_access_key = prompt.ask('AWS Secret Access Key: '.colorize(:blue), required: true)
       aws_region = prompt.select('Choose a AWS region: '.colorize(:blue), Pele::Regions::ALL)
@@ -28,7 +45,15 @@ module Pele
       puts ''
       key_pair_name = prompt.ask('Name your key-pair. For example: mykeypair.colorize(:green)')
       begin
-        Pele::Utils.create_key_pair(os, key_pair_name)
+        current_dirname = File.basename(Dir.getwd)
+        ec2 = Aws::EC2::Client.new
+        Dir.chdir File.dirname(os)
+        ec2.create_key_pair(key_name: key_pair_name)
+        Dir.chdir current_dirname
+        create_file "#{File.dirname(os)}key" do
+          key_pair_name.to_s
+        end
+        say('Key-pair successfully generated', :green)
       rescue
         say('Something went wrong while trying to create key-pair. Please try again', :red)
       end

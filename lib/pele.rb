@@ -5,7 +5,6 @@ require 'tty-prompt'
 require 'pele/aws_regions'
 require 'colorize'
 require 'aws-sdk'
-require 'pele/utils'
 require 'pele/cli'
 
 module Pele
