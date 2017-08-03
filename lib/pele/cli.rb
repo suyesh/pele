@@ -36,9 +36,10 @@ module Pele
       create_file os do
         "[default]\naws_access_key_id = #{aws_access_key_id}\naws_secret_access_key = #{aws_secret_access_key}\nregion = #{aws_region}"
       end
-      say('Now lets generate AWS key-pair. This is needed to access EC2 Instances', :green)
       puts ''
+      say('Now lets generate AWS key-pair. This is needed to access EC2 Instances', :green)
       if File.exist? File.expand_path "#{os}key"
+        puts ''
         overwrite = prompt.select('Looks like you already have a key generated. Would you like to generate new one?', %w[Yes No])
         abort if overwrite == 'Yes'
       end
@@ -54,7 +55,8 @@ module Pele
           key_pair_name.to_s
         end
         say('Key-pair successfully generated', :green)
-      rescue
+      rescue => e
+        puts e
         say('Something went wrong while trying to create key-pair. Please try again', :red)
       end
     end
