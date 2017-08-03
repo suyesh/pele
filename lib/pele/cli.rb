@@ -44,13 +44,13 @@ module Pele
         abort if overwrite == 'Yes'
       end
       puts ''
-      key_pair = prompt.ask('Name your key-pair. For example: mykeypair.colorize(:green)')
+      key_pair_name = prompt.ask('Name your key-pair. For example: mykeypair.colorize(:green)')
       begin
         current_dirname = File.basename(Dir.getwd)
         ec2 = Aws::EC2::Client.new
-        ec2.create_key_pair(key_name: key_pair)
-        create_file "~/.ssh/#{key_pair}.pem" do
-          key_pair.key_fingerprint
+        key_pair = ec2.create_key_pair(key_name: key_pair_name)
+        create_file "~/.ssh/#{key_pair.key_name}.pem" do
+          key_pair.key_material
         end
         File.open("~/.ssh/#{key_pair_name}.pem", 'w') do |file|
           file.write key_pair_name
