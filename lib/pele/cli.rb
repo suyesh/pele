@@ -5,7 +5,7 @@ module Pele
     desc 'pele init', 'Initializes the AWS credentials on your Machine'
     def init
       os = if OS.windows?
-             '%USERPROFILE%.awscredentials'
+             '%HOMEPATH%\.aws\credentials'
            elsif OS.mac? || OS.linux?
              '~/.aws/credentials'
            end
@@ -49,9 +49,12 @@ module Pele
         current_dirname = File.basename(Dir.getwd)
         ec2 = Aws::EC2::Client.new
         ec2.create_key_pair(key_name: key_pair_name)
-        # create_file "#{File.dirname(os)}key" do
-        #   key_pair_name.to_s
-        # end
+        File.open("~/.ssh/#{key_pair_name}.pem", 'w') do |file|
+          file.write key_pair_name.private_key
+        end
+        require 'fileutils'
+        FileUtils.chmod(0600, "~/.ssh/my-key-pair.pk")
+
         say('Key-pair successfully generated', :green)
       rescue => e
         say('Something went wrong while trying to create key-pair. Please try again', :red)
