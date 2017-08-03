@@ -56,8 +56,9 @@ module Pele
         end
         say('Key-pair successfully generated', :green)
       rescue => e
-        puts e
         say('Something went wrong while trying to create key-pair. Please try again', :red)
+        puts ''
+        puts "Error: #{e.colorize(:red)}"
       end
     end
   end
